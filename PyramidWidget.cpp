@@ -4,11 +4,11 @@
 
 // Конструктор класса PyramidWidget
 PyramidWidget::PyramidWidget(QWidget *parent)
-    : QOpenGLWidget(parent), x0(50), y0(20) // Инициализация начального значения x0
+    : QOpenGLWidget(parent), x0(50), y0(20) // Инициализация начальных значений
 {
     // Подключение таймера к слоту обновления вида
     connect(&timer, &QTimer::timeout, this, &PyramidWidget::updateView);
-    timer.start(100); // Запуск таймера с интервалом 1 секунда
+    timer.start(100);
 }
 
 // Деструктор класса PyramidWidget
@@ -48,7 +48,6 @@ void PyramidWidget::paintGL()
 
     // Настройка модели
     QMatrix4x4 modelView;
-    modelView.translate(0, 0, -5); // Перемещение модели по оси z
 
     // Вычисление матрицы модели-проекции
     QMatrix4x4 mvp = projection * modelView;
@@ -77,7 +76,7 @@ void PyramidWidget::paintGL()
     program.setUniformValue("mvpMatrix", mvp); // Передача матрицы модели-проекции в шейдер
 
     // Определение вершин пирамиды и их цветов
-    GLfloat vertices[] = {
+    GLfloat Ver[] = {
         // Координаты вершин и цвета
         -10.0f, -5.0f, 0.0f,  1.0f, 0.0f, 0.0f, // Нижняя левая вершина основания (красный)
         10.0f, -5.0f, 0.0f,  0.0f, 1.0f, 0.0f, // Нижняя правая вершина основания (зеленый)
@@ -87,7 +86,7 @@ void PyramidWidget::paintGL()
     };
 
     // Определение индексов вершин для отрисовки граней пирамиды
-    GLuint indices[] = {
+    GLuint Reb[] = {
         0, 1, 4, // Первая боковая грань
         1, 2, 4, // Вторая боковая грань
         2, 3, 4, // Третья боковая грань
@@ -98,13 +97,13 @@ void PyramidWidget::paintGL()
 
     // Активация и настройка атрибутов вершин
     program.enableAttributeArray("vertexPosition");
-    program.setAttributeArray("vertexPosition", GL_FLOAT, vertices, 3, 6 * sizeof(GLfloat));
+    program.setAttributeArray("vertexPosition", GL_FLOAT, Ver, 3, 6 * sizeof(GLfloat));
 
     program.enableAttributeArray("vertexColor");
-    program.setAttributeArray("vertexColor", GL_FLOAT, vertices + 3, 3, 6 * sizeof(GLfloat));
+    program.setAttributeArray("vertexColor", GL_FLOAT, Ver + 3, 3, 6 * sizeof(GLfloat));
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // Установка режима отрисовки линиями
-    glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, indices); // Отрисовка пирамиды
+    glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, Reb); // Отрисовка пирамиды
 
     // Деактивация атрибутов вершин
     program.disableAttributeArray("vertexPosition");
