@@ -24,7 +24,7 @@ private slots:
 private:
     QTimer timer; // Таймер для обновления вида
     float x0; // Координата x для точки зрения
-    float y0; // Координата x для точки зрения
+    float y0; // Координата y для точки зрения
 };
 
 #endif // PYRAMIDWIDGET_H
